@@ -1,0 +1,23 @@
+language: go
+
+go:
+  - 1.2
+
+env:
+  - CI_REPORT=shippable/testresults/junit.xml
+
+before_install:
+  - make install
+  - make devinstall
+  - go get code.google.com/p/go.tools/cmd/cover
+  - mkdir -p $GOPATH/src/github.com/intuition-io
+  - ln -sfn $PWD $GOPATH/src/github.com/intuition-io/terminal
+
+# Make folders for the reports
+before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+
+# TODO Add COVERALLS_TOKEN and make coverage
+script:
+  - make test TESTARGS="-coverprofile=coverage.txt -covermode count ./"

@@ -1,0 +1,15 @@
+{
+	"ImportPath": "github.com/intuition-io/terminal",
+	"GoVersion": "go1.2rc5",
+	"Deps": [
+		{
+			"ImportPath": "github.com/bndr/gopencils",
+			"Rev": "324b6d8356da161029d950038b158b2a4642553c"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-22-g687db20",
+			"Rev": "687db20fc379d1686465a28e9959707cd1acc990"
+		}
+	]
+}
