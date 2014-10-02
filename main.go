@@ -1,36 +1,79 @@
+/*
+ * Intuition API client - package main wraps high level abstraction
+ */
 package main
 
 import (
-	"log"
+	"io/ioutil"
 	"os"
 
 	"github.com/codegangsta/cli"
+	"github.com/mitchellh/panicwrap"
 )
 
-var Log *log.Logger
+var Log = NewUi()
 
-func main() {
+func terminal() error {
 	app := cli.NewApp()
 	app.Name = "Intuition"
 	app.Version = Version
 	app.Usage = "Intuition API client"
 
+	// Flags available for every subcommands
 	app.Flags = []cli.Flag{
-		// TODO Impact log setup
-		cli.BoolFlag{Name: "verbose", Usage: "Extends log output to debug level"},
-		cli.StringFlag{Name: "addr", Value: "http://localhost:5000", Usage: "Telepathy HTTP API address"},
+		cli.StringFlag{
+			Name:  "addr",
+			Value: "http://localhost:5000",
+			Usage: "Telepathy HTTP API address",
+		},
 	}
 
-	app.Action = func(c *cli.Context) {
-		Log = log.New(os.Stdout, "[intuition] ", log.Ldate|log.Ltime|log.Lshortfile)
+	app.Commands = setupCommands()
+	//app.RunAndExitOnError()
+	return app.Run(os.Args)
+}
 
-		api := NewIntuitionAPI(c.String("addr"))
+func appWrapper() int {
+	// We also always send logs to a temporary file that we use in case
+	// there is a panic. Otherwise, we delete it.
+	logTempFile, err := ioutil.TempFile("", "packer-log")
+	if err != nil {
+		Log.Error("Couldn't setup logging tempfile: %s", err)
+		return 1
+	}
+	defer os.Remove(logTempFile.Name())
+	defer logTempFile.Close()
 
-		health, err := api.Health()
-		Log.Printf("Error: %v\n", err)
-		Log.Printf("State: %v\n", health.State)
-		Log.Printf("Versions: %v\n", health.Version)
+	// Create the configuration for panicwrap and wrap our executable
+	wrapConfig := &panicwrap.WrapConfig{
+		Handler: panicHandler(logTempFile),
+		Writer:  logTempFile,
 	}
 
-	app.RunAndExitOnError()
+	exitStatus, err := panicwrap.Wrap(wrapConfig)
+	if err != nil {
+		Log.Error("Couldn't start Terminal: %s", err)
+		return 1
+	}
+	if exitStatus >= 0 {
+		return 1
+	}
+
+	// We're the child, so just close the tempfile we made in order to
+	// save file handles since the tempfile is only used by the parent.
+	logTempFile.Close()
+
+	if err := terminal(); err != nil {
+		Log.Error("%s", err)
+		return 1
+	}
+
+	return 0
+}
+
+func main() {
+	// Call realMain instead of doing the work here so we can use
+	// `defer` statements within the function and have them work properly.
+	// (defers aren't called with os.Exit)
+	os.Exit(appWrapper())
 }

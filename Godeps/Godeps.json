@@ -10,6 +10,19 @@
 			"ImportPath": "github.com/codegangsta/cli",
 			"Comment": "1.2.0-22-g687db20",
 			"Rev": "687db20fc379d1686465a28e9959707cd1acc990"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/osext",
+			"Rev": "0dd3f918b21bec95ace9dc86c7e70266cfc5c702"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/panicwrap",
+			"Rev": "45cbfd3bae250c7676c077fb275be1a2968e066a"
+		},
+		{
+			"ImportPath": "github.com/ttacon/chalk",
+			"Comment": "v0.1",
+			"Rev": "76b3c8b611dea8f83e49e9ce81fc2b189e0ef3d2"
 		}
 	]
 }

@@ -1,9 +1,33 @@
 Terminal
 ========
 
-[![Gitter chat][gitter]
+[![Build Status](https://api.shippable.com/projects/53f671c7fc1e7b4903f36573/badge/master)](https://www.shippable.com/projects/53f671c7fc1e7b4903f36573)
+[![Coverage Status](https://img.shields.io/coveralls/intuition-io/terminal.svg)](https://coveralls.io/r/intuition-io/terminal?branch=develop)
+[![Gitter chat](https://badges.gitter.im/intuition-io.png)](https://gitter.im/intuition-io)
 
 > [Intuition][telepathy] HTTP API client
+
+
+Getting started
+---------------
+
+Compile from source
+
+```console
+go get github.com/intuition-io/terminal
+```
+
+Or download a single binary
+
+```console
+PLATFORM="linux/amd64"
+# See gobuild.io for other supported platforms
+wget http://gobuild.io/github.com/intuition-io/terminal/master/${PLATFORM} -O output.zip
+unzip output.zip
+
+./terminal --help
+./terminal <cmd> --help
+```
 
 
 Documentation
@@ -24,10 +48,8 @@ Contributing
 > respectable place here [=)][jondotquote]
 
 ```console
-go get github.com/tools/godep
-go get github.com/mitchellh/gox
-
-make test TEST=-v
+make devinstall
+make test TESTARGS=-v
 ```
 
 
@@ -58,7 +80,9 @@ Copyright 2014 Xavier Bruhiere.
 
 ---------------------------------------------------------------
 
-![Gophaer][gopher]
+<p align="center">
+  <img src="https://raw.github.com/hivetech/hivetech.github.io/master/images/pilotgopher.jpg" alt="gopher" width="200px"/>
+</p>
 
 
 [telepathy]: https://github.com/intuition-io/telepathy
@@ -67,7 +91,5 @@ Copyright 2014 Xavier Bruhiere.
 [xbruhiere]: https://avatars.githubusercontent.com/u/1517057
 [xbtwitter]: https://twitter.com/XavierBruhiere
 [jondotquote]: https://github.com/jondot/groundcontrol
-[gitter]: https://badges.gitter.im/intuition-io.png)](https://gitter.im/intuition-io
 [walker]: http://gowalker.org/github.com/intuition-io/terminal
 [doc]: http://godoc.org/github.com/intuition-io/terminal
-[gopher]: https://raw.github.com/hivetech/hivetech.github.io/master/images/pilotgopher.jpg

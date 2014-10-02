@@ -3,7 +3,7 @@
 # vim:ft=make
 
 all:
-	godep go build
+	$(GOPATH)/bin/godep go build
 
 # start documentation server on localhost:6060
 doc:
@@ -22,6 +22,8 @@ dist:
 install:
 	go get -u github.com/bndr/gopencils
 	go get -u github.com/codegangsta/cli
+	go get -u github.com/mitchellh/panicwrap
+	go get -u github.com/ttacon/chalk
 	go install
 
 devinstall:
@@ -29,19 +31,19 @@ devinstall:
 	go get -u github.com/mitchellh/gox
 	go get -u github.com/axw/gocov/gocov
 	go get -u  github.com/mattn/goveralls
-	godep save
+	$(GOPATH)/bin/godep save
 
 test:
-	TF_ACC= godep go test $(TEST) $(TESTARGS) -timeout=10s
+	TF_ACC= $(GOPATH)/bin/godep go test $(TEST) $(TESTARGS) -timeout=10s
 
 testrace:
-	TF_ACC= godep go test -race $(TEST) $(TESTARGS)
+	TF_ACC= $(GOPATH)/bin/godep go test -race $(TEST) $(TESTARGS)
 
 coverage:
 	# TODO Check for $COVERALLS_TOKEN
-	goveralls -v -service drone.io -repotoken $(COVERALLS_TOKEN)
+	$(GOPATH)/bin/goveralls -v -service drone.io -repotoken $(COVERALLS_TOKEN)
 
 clean:
-	@sh -c "rm bin/*"
+	@sh -c "rm bin/* coverage*"
 
 .PHONY: default updatedeps dist bin clean test

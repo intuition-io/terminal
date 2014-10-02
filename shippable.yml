@@ -5,11 +5,11 @@ go:
 
 env:
   - CI_REPORT=shippable/testresults/junit.xml
+  - COVERALLS_TOKEN=xfsZpmhzDFYGsEJJ2T8VodmEo0muklBWA
 
 before_install:
   - make install
   - make devinstall
-  - go get code.google.com/p/go.tools/cmd/cover
   - mkdir -p $GOPATH/src/github.com/intuition-io
   - ln -sfn $PWD $GOPATH/src/github.com/intuition-io/terminal
 
@@ -20,4 +20,5 @@ before_script:
 
 # TODO Add COVERALLS_TOKEN and make coverage
 script:
-  - make test TESTARGS="-coverprofile=coverage.txt -covermode count ./"
+  - make test TESTARGS="-coverprofile=coverage.out -covermode count ./"
+  - make coverage

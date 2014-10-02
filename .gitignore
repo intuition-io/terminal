@@ -33,3 +33,5 @@ pkg/
 cli
 Godeps/_workspace/
 *.txt
+
+terminal

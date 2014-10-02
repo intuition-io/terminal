@@ -4,7 +4,18 @@ type Trades struct {
 	workers []interface{}
 }
 
+type ComponentInfos struct {
+	Name    string
+	Version string
+	State   interface{}
+}
+
 type TelepathyHealth struct {
-	State   map[string]string
-	Version map[string]string
+	Components []ComponentInfos
+	Version    string
+}
+
+type ModulesDoc struct {
+	Version   string
+	Resources []interface{}
 }
